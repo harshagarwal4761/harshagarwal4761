@@ -1,44 +1,46 @@
 <p align="center">
-  <img src="assets/chess-banner.png" alt="Harsh Agarwal — Think ahead. Build with intent. A mint knight on a dark chessboard." width="100%" />
+  <b>♞ THINK AHEAD. BUILD WITH INTENT.</b><br />
+  <sub>Code, curiosity, and the next good move.</sub>
 </p>
+
+<img src="assets/player-card.gif" width="100%" alt="Harsh Agarwal's animated terminal profile: a scanning ASCII chess knight, technologies, and daily refreshed public GitHub stats." />
 
 <p align="center">
-  <b>A little strategy. A lot of curiosity. One move at a time.</b><br />
-  Exploring code, building projects, and enjoying the game of chess.
+  <a href="https://github.com/harshagarwal4761?tab=repositories">Repositories</a>
+  &nbsp; / &nbsp;
+  <a href="#-pieces-in-play">Projects</a>
+  &nbsp; / &nbsp;
+  <a href="assets/player-card.png">Still version</a>
 </p>
 
-<p align="center">
-  <a href="https://github.com/harshagarwal4761?tab=repositories">Explore my repositories</a>
-  &nbsp; · &nbsp;
-  <a href="#-on-the-board">Featured projects</a>
-</p>
+### ♞ The long game
 
----
+<img src="assets/contribution-board.gif" width="100%" alt="Real GitHub contributions over the last year, with a decorative knight making L-shaped moves across the calendar." />
 
-### ♞ On the board
+<p align="center"><sub>Real contributions. A knight taking the scenic route. <a href="assets/contribution-board.png">View without animation</a>.</sub></p>
 
-| Piece | Project | Inside the repo |
-| :---: | :--- | :--- |
-| ♜ | **[AI Library Tools](https://github.com/harshagarwal4761/AI-Library-Tools)** | A Java-based AI tools hub with a web dashboard, authentication, and tool management. |
-| ♝ | **[File Scanner](https://github.com/harshagarwal4761/File-Scanner)** | A Java project with directory scanning, pattern matching, and infection reporting components. |
-| ♟ | **[SPS Project](https://github.com/harshagarwal4761/SPS-Project)** | Shell scripts for building, packaging, archiving, and deploying a C project. |
+### ♜ Pieces in play
 
-### ♟ Pieces in play
+<a href="https://github.com/harshagarwal4761/AI-Library-Tools"><img src="assets/ai-tools.png" width="100%" alt="AI Library Tools — Java web app with tool discovery, a dashboard, and authentication. View repository." /></a>
 
-Languages and tools found across my projects:
+<a href="https://github.com/harshagarwal4761/File-Scanner"><img src="assets/file-scanner.png" width="100%" alt="File Scanner — Java directory scanning, pattern matching, and reporting components. View repository." /></a>
 
-`Java` &nbsp; `HTML` &nbsp; `CSS` &nbsp; `JavaScript` &nbsp; `Shell` &nbsp; `Kotlin` &nbsp; `Git`
+<a href="https://github.com/harshagarwal4761/SPS-Project"><img src="assets/sps-project.png" width="100%" alt="SPS Project — Shell scripts to build, package, archive, and deploy a C project. View repository." /></a>
 
 <details>
-<summary><b>♚ Away from the editor</b></summary>
+<summary><b>♟ Open the toolbox</b></summary>
 <br />
 
-Chess belongs here too. Patterns, possibilities, and that satisfying moment when a plan comes together.
+Languages and tools used across my projects:
+
+`Java` · `HTML` · `CSS` · `JavaScript` · `Shell` · `Kotlin` · `Git`
+
+- [AI Library Tools](https://github.com/harshagarwal4761/AI-Library-Tools)
+- [File Scanner](https://github.com/harshagarwal4761/File-Scanner)
+- [SPS Project](https://github.com/harshagarwal4761/SPS-Project)
 
 </details>
 
----
+<p align="center"><sub>♚ One move at a time.</sub></p>
 
-<p align="center">
-  <sub>♞ Think a few moves ahead. Keep building.</sub>
-</p>
+<!-- Cards refresh daily using the repository's GitHub Actions workflow. -->
