@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+<title>Harsh's knight — emerald, ivory, gold and lavender</title>
+<defs>
+ <radialGradient id="background"><stop stop-color="#28634c"/><stop offset="1" stop-color="#0b201c"/></radialGradient>
+ <linearGradient id="ivory" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff9e9"/><stop offset="1" stop-color="#e6cb92"/></linearGradient>
+ <pattern id="board" width="192" height="192" patternUnits="userSpaceOnUse"><rect width="96" height="96" fill="#83c6a3" opacity=".065"/><rect x="96" y="96" width="96" height="96" fill="#83c6a3" opacity=".065"/></pattern>
+</defs>
+<rect width="1024" height="1024" fill="url(#background)"/>
+<rect width="1024" height="1024" fill="url(#board)"/>
+<circle cx="512" cy="512" r="432" fill="none" stroke="#639479" stroke-width="2"/>
+<circle cx="512" cy="512" r="415" fill="none" stroke="#345e4d" stroke-width="14"/>
+<path d="M132 346 A415 415 0 0 1 509 97" fill="none" stroke="#f5c66e" stroke-width="14" stroke-linecap="round"/>
+<path d="M742 858 A415 415 0 0 0 912 623" fill="none" stroke="#c5b3ff" stroke-width="14" stroke-linecap="round"/>
+<path d="M251 723 V552 H337" fill="none" stroke="#76b294" stroke-width="5" stroke-dasharray="10 14"/>
+<circle cx="251" cy="723" r="13" fill="#f5c66e"/>
+<path d="M753 270 V314 M731 292 H775" stroke="#c5b3ff" stroke-width="9" stroke-linecap="round"/>
+<g transform="translate(300 195) scale(2.4)">
+ <path d="M20 221 C22 181 47 164 66 143 L76 126 L48 134 L29 126 L8 129 L0 111 L23 79 L33 52 L57 39 L63 9 L83 29 L101 14 L109 46 C151 67 171 101 166 150 C163 178 150 197 154 221 Z" fill="#071b16" stroke="#071b16" stroke-width="14" stroke-linejoin="round"/>
+ <path d="M20 221 C22 181 47 164 66 143 L76 126 L48 134 L29 126 L8 129 L0 111 L23 79 L33 52 L57 39 L63 9 L83 29 L101 14 L109 46 C151 67 171 101 166 150 C163 178 150 197 154 221 Z" fill="url(#ivory)" stroke="#fff3db" stroke-width="2" stroke-linejoin="round"/>
+ <path d="M105 55 C144 96 141 134 114 166 C101 182 97 200 98 218" fill="none" stroke="#a78c55" stroke-width="5" stroke-linecap="round"/>
+ <path d="M27 120 L48 115 L61 91" fill="none" stroke="#a78c55" stroke-width="3" stroke-linecap="round"/>
+ <circle cx="53" cy="71" r="5" fill="#173b2d"/>
+ <rect x="12" y="220" width="150" height="12" rx="4" fill="#f5c66e" stroke="#173b2d" stroke-width="3"/>
+ <path d="M17 235 H157 L171 249 H3 Z" fill="#c5b3ff" stroke="#173b2d" stroke-width="3" stroke-linejoin="round"/>
+</g>
+</svg>

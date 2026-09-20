@@ -1,7 +1,5 @@
 """Render a chess profile from public GitHub data; no external image services."""
 import json
-import math
-import os
 from pathlib import Path
 import subprocess
 from datetime import date
@@ -23,12 +21,15 @@ QUERY = '''query { user(login: "harshagarwal4761") {
   } }
 } }'''
 
-BG = '#071311'
-PANEL = '#0b211b'
+BG = '#0c1318'
+PANEL = '#10221f'
 LINE = '#285c49'
 MINT = '#a3ffd3'
-WHITE = '#edf9f2'
-MUTED = '#88ad9c'
+WHITE = '#fff3db'
+GOLD = '#f5c66e'
+LAVENDER = '#c5b3ff'
+CORAL = '#f3a591'
+MUTED = '#a5b5b9'
 LEVELS = ['#14342a', '#1e6448', '#299664', '#55ca8b', '#a3ffd3']
 LEVEL_NAMES = ['NONE', 'FIRST_QUARTILE', 'SECOND_QUARTILE', 'THIRD_QUARTILE', 'FOURTH_QUARTILE']
 
@@ -44,7 +45,7 @@ FONTS = {s: font(s) for s in [12, 14, 16, 18, 20, 24, 28, 38, 44]}
 def text(d, xy, value, size=16, color=WHITE):
     d.text(xy, str(value), font=FONTS[size], fill=color)
 
-def panel(height, label, right):
+def panel(height, label, right, accent=MINT):
     im = Image.new('RGB', (1200, height), BG)
     d = ImageDraw.Draw(im)
     for inset in range(12):
@@ -52,9 +53,9 @@ def panel(height, label, right):
         d.rounded_rectangle((inset, inset, 1199-inset, height-1-inset), radius=22-inset,
                             outline=(14, g, int(g*.72)))
     d.rounded_rectangle((15, 15, 1184, height-16), radius=10, fill=PANEL, outline=LINE)
-    for x, color in [(36, '#8effbc'), (56, '#62b68b'), (76, '#315f4d')]:
+    for x, color in [(36, CORAL), (56, GOLD), (76, MINT)]:
         d.ellipse((x, 34, x+7, 41), fill=color)
-    text(d, (105, 28), label, 14, MINT)
+    text(d, (105, 28), label, 14, accent)
     text(d, (1160-d.textlength(right, font=FONTS[12]), 30), right, 12, MUTED)
     d.line((32, 62, 1167, 62), fill=LINE)
     return im
@@ -64,7 +65,7 @@ def save_animation(frames, name, duration):
     palette = frames[0].quantize(colors=256)
     frames = [f.quantize(palette=palette, dither=Image.Dither.NONE) for f in frames]
     frames[0].save(ASSETS/name, save_all=True, append_images=frames[1:], loop=0,
-                   duration=duration, disposal=2, optimize=True)
+                   duration=duration, disposal=1, optimize=True)
 
 def hero(user, updated):
     calendar = user['contributionsCollection']['contributionCalendar']
@@ -73,20 +74,21 @@ def hero(user, updated):
     d.line((453, 88, 453, 452), fill=LINE)
     text(d, (498, 91), 'HARSH AGARWAL', 38)
     text(d, (500, 145), '@'+USER, 18, MINT)
-    text(d, (500, 190), 'Think ahead. Build with intent.', 18, MUTED)
-    text(d, (500, 238), 'CLASS', 14, MUTED)
+    text(d, (500, 190), 'Think ahead. Build with intent.', 18, GOLD)
+    text(d, (500, 238), 'CLASS', 14, LAVENDER)
     text(d, (684, 234), 'Developer / chess enthusiast', 16)
-    text(d, (500, 277), 'LOADOUT', 14, MUTED)
+    text(d, (500, 277), 'LOADOUT', 14, MINT)
     text(d, (684, 273), 'Java · Web · Shell · Kotlin', 16)
-    text(d, (500, 316), 'PLAYSTYLE', 14, MUTED)
+    text(d, (500, 316), 'PLAYSTYLE', 14, GOLD)
     text(d, (684, 312), 'Curiosity, then the next move.', 16)
-    for x, val, label in [(500, user['allRepos']['totalCount'], 'PUBLIC REPOS'),
-                          (722, calendar['totalContributions'], 'CONTRIBUTIONS / YEAR'),
-                          (1000, user['followers']['totalCount'], 'FOLLOWERS')]:
-        text(d, (x, 375), f'{val:02}', 38, MINT)
+    for x, val, label, accent in [(500, user['allRepos']['totalCount'], 'PUBLIC REPOS', GOLD),
+                          (722, calendar['totalContributions'], 'CONTRIBUTIONS / YEAR', MINT),
+                          (1000, user['followers']['totalCount'], 'FOLLOWERS', LAVENDER)]:
+        d.line((x,362,x+42,362),fill=accent,width=2)
+        text(d, (x, 375), f'{val:02}', 38, accent)
         text(d, (x, 425), label, 12, MUTED)
     d.line((33, 473, 1167, 473), fill=LINE)
-    text(d, (42, 489), '01 / THE KNIGHT     THINK IN POSSIBILITIES.', 14, MINT)
+    text(d, (42, 489), '01 / THE KNIGHT     THINK IN POSSIBILITIES.', 14, GOLD)
     text(d, (882, 489), 'SYNC '+updated, 14, MUTED)
     # Original knight silhouette, sampled into a field of terminal characters.
     mask=Image.new('L',(180,260))
@@ -107,7 +109,8 @@ def hero(user, updated):
                     char='01/+#'[ (r*3+c*7)%5 ]
                     yy=91+r*11
                     distance=abs((yy-91)-scan)
-                    col=MINT if distance<25 else '#5bc69a' if distance<70 else '#358768'
+                    col=WHITE if distance<25 else GOLD if distance<70 else '#549d86'
+                    if r>27: col=LAVENDER if distance<70 else '#9284b9'
                     text(d,(62+c*10,yy),char,12,col)
         text(d,(96,445),'Nf3  /  READY FOR THE NEXT MOVE',12,MUTED)
         frames.append(im)
@@ -119,7 +122,7 @@ def activity(user, updated):
     weeks=cal['weeks']; count=cal['totalContributions']
     base=panel(380,'THE LONG GAME / CONTRIBUTION ACTIVITY', 'REAL GITHUB DATA')
     d=ImageDraw.Draw(base)
-    text(d,(42,83),f'{count} contributions',28,MINT)
+    text(d,(42,83),f'{count} contributions',28,WHITE)
     text(d,(42,121),'Over the last year. Every move counts.',14,MUTED)
     startx=83; starty=178; step=20; cell=15
     previous=None
@@ -137,7 +140,7 @@ def activity(user, updated):
             d.rounded_rectangle((x,y,x+cell,y+cell),radius=3,fill=LEVELS[level])
             valid.add((col,row))
     for row,day in [(1,'M'),(3,'W'),(5,'F')]:text(d,(48,starty+row*step),day,12,MUTED)
-    text(d,(42,343),'A KNIGHT TAKES THE SCENIC ROUTE.',12,MINT)
+    text(d,(42,343),'A KNIGHT TAKES THE SCENIC ROUTE.',12,GOLD)
     text(d,(873,343),'LESS',12,MUTED)
     for i,c in enumerate(LEVELS):d.rounded_rectangle((916+i*21,344,930+i*21,357),radius=2,fill=c)
     text(d,(1033,343),'MORE',12,MUTED)
@@ -161,10 +164,10 @@ def activity(user, updated):
             x=startx+col*step+7; y=starty+row*step+7
             # The board remains intact; only the decorative knight moves.
             radius=15+phase*2
-            d.ellipse((x-radius,y-radius,x+radius,y+radius),fill=BG,outline=MINT,width=1)
+            d.ellipse((x-radius,y-radius,x+radius,y+radius),fill=BG,outline=GOLD,width=2)
             points=[(x+px-9,y+py-10) for px,py in token]
             d.polygon(points,fill=WHITE)
-            d.rectangle((x-10,y+10,x+10,y+12),fill=MINT)
+            d.rectangle((x-10,y+10,x+10,y+12),fill=GOLD)
             d.point((x-2,y-5),fill=BG)
             frames.append(im)
     base.save(ASSETS/'contribution-board.png')
@@ -178,15 +181,17 @@ def main():
     today=date.today().isoformat()
     hero(user,today)
     activity(user,today)
-    projects=[('01 / ROOK', 'AI LIBRARY TOOLS', 'Java web app / tool discovery, dashboard & authentication', 'ai-tools'),
-              ('02 / BISHOP', 'FILE SCANNER', 'Java / directory scanning, pattern matching & reports', 'file-scanner'),
-              ('03 / PAWN', 'SPS PROJECT', 'Shell / build, package, archive & deploy a C project', 'sps-project')]
-    for label,title,subtitle,slug in projects:
-        im=panel(180,label,'PIECES IN PLAY')
+    projects=[('01 / ROOK', 'AI LIBRARY TOOLS', 'Java web app / tool discovery, dashboard & authentication', 'ai-tools', GOLD),
+              ('02 / BISHOP', 'FILE SCANNER', 'Java / directory scanning, pattern matching & reports', 'file-scanner', LAVENDER),
+              ('03 / PAWN', 'SPS PROJECT', 'Shell / build, package, archive & deploy a C project', 'sps-project', MINT)]
+    for label,title,subtitle,slug,accent in projects:
+        im=panel(180,label,'PIECES IN PLAY',accent)
         d=ImageDraw.Draw(im)
-        text(d,(42,81),title,28,MINT)
+        d.rounded_rectangle((28,81,32,148),radius=2,fill=accent)
+        text(d,(48,81),title,28,WHITE)
         text(d,(42,128),subtitle,16,MUTED)
-        text(d,(984,95),'VIEW REPO >',16,WHITE)
+        d.rounded_rectangle((965,86,1148,126),radius=9,fill=BG,outline=accent)
+        text(d,(984,95),'VIEW REPO >',16,accent)
         im.save(ASSETS/(slug+'.png'))
     print('Rendered player card and contribution board from live public GitHub data.')
 
