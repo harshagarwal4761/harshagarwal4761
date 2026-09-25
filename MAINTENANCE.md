@@ -1,17 +1,9 @@
-# Chess profile
+# Minimal Rayquaza profile
 
-All images are generated in this repository. There are no paid widgets, image services, or subscriptions.
+The profile is intentionally calm and static: one banner, plain text, and project links. There are no animated panels, external widgets, or subscriptions. GitHub's own contribution calendar appears below the README.
 
-The workflow in `.github/workflows/refresh-profile.yml` runs daily at 03:23 UTC (08:53 India time), or manually from Actions → Refresh chess profile → Run workflow. It uses a standard GitHub-hosted runner in this public repository, which GitHub provides free. Keep it public to retain that free hosting arrangement.
+Edit `README.md` to change the text or project selection. The illustration is `assets/rayquaza-minimal.png`. It was created with the built-in image generation tool; the prompt is saved in `ARTWORK.md`.
 
-The workflow uses the built-in repository token; no personal access token is required. It queries public repository totals, follower counts, and GitHub's contribution calendar. Counts are a daily snapshot, not a live counter. GitHub may pause scheduled workflows after 60 days of repository inactivity; they can be re-enabled in Actions.
+The previous daily card-refresh workflow has been removed because the current profile has no generated statistics cards. Earlier themes remain available in Git history; their unused assets can be reused later.
 
-The knight is decorative and follows legal knight moves across the activity calendar. The renderer never creates or modifies historical contributions. The generator's bot commits may appear in repository history as normal refresh commits.
-
-Edit `README.md` for wording and project links. Edit `scripts/render_profile.py` for card colors, headings, and animation. The PNG versions provide still alternatives to each GIF. The original banner is retained in `assets/chess-banner.*`.
-
-To generate locally, install Python 3.12+, Pillow 12.3.0, and the GitHub CLI, sign in with `gh auth login`, then run `python scripts/render_profile.py`.
-
-GitHub references:
-- https://docs.github.com/en/billing/concepts/product-billing/github-actions
-- https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule
+The banner is unofficial Pokémon fan art featuring Rayquaza.
