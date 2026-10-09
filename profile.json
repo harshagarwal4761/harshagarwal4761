@@ -1,0 +1,19 @@
+{
+  "projects": [
+    {
+      "repo": "harshagarwal4761/AI-Library-Tools",
+      "title": "AI Library Tools",
+      "description": "A Java web app for discovering AI tools, with a dashboard and authentication."
+    },
+    {
+      "repo": "harshagarwal4761/File-Scanner",
+      "title": "File Scanner",
+      "description": "Java utilities for directory scanning, pattern matching, and reporting."
+    },
+    {
+      "repo": "harshagarwal4761/SPS-Project",
+      "title": "SPS Project",
+      "description": "Shell scripts to build, package, archive, and deploy a C project."
+    }
+  ]
+}

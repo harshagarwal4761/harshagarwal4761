@@ -1,19 +1,35 @@
 # Chess profile
 
-All images are generated in this repository. There are no paid widgets, image services, or subscriptions.
+This profile uses two small, repository-hosted GIFs, native Markdown project entries, and still-image alternatives. No external widgets or paid services are needed. The header and calendar share a thin border, the same width, and a restrained green palette. Images are capped at 840 display pixels and shrink with GitHub's content column.
 
-The workflow in `.github/workflows/refresh-profile.yml` runs daily at 03:23 UTC (08:53 India time), or manually from Actions → Refresh chess profile → Run workflow. It uses a standard GitHub-hosted runner in this public repository, which GitHub provides free. Keep it public to retain that free hosting arrangement.
+## Choose your featured projects
 
-The workflow uses the built-in repository token; no personal access token is required. It queries public repository totals, follower counts, and GitHub's contribution calendar. Counts are a daily snapshot, not a live counter. GitHub may pause scheduled workflows after 60 days of repository inactivity; they can be re-enabled in Actions.
+Edit [`profile.json`](profile.json) on GitHub. The `projects` array holds exactly three repositories, in display order:
 
-The knight is decorative and follows legal knight moves across the activity calendar. The renderer never creates or modifies historical contributions. The generator's bot commits may appear in repository history as normal refresh commits.
+```json
+{
+  "projects": [
+    {"repo": "harshagarwal4761/YourFirstRepo"},
+    {"repo": "harshagarwal4761/YourSecondRepo"},
+    {"repo": "harshagarwal4761/YourThirdRepo"}
+  ]
+}
+```
 
-Edit `README.md` for wording and project links. Edit `scripts/render_profile.py` for card colors, headings, and animation. The PNG versions provide still alternatives to each GIF. The original banner is retained in `assets/chess-banner.*`.
+Use public repository names in `owner/repository` format. You can also supply optional `title` and `description` fields for custom wording. When omitted, they come from the repository's public metadata; the language is fetched automatically. Empty descriptions get a short neutral fallback.
 
-To generate locally, install Python 3.12+, Pillow 12.3.0, and the GitHub CLI, sign in with `gh auth login`, then run `python scripts/render_profile.py`.
+Saving this file to `main` starts the refresh workflow. It regenerates the links and descriptions between the project markers in `README.md`, usually within a few minutes. Keep those markers intact. You may edit the rest of the README directly. This controls the README's Selected work section; GitHub's separate pinned repositories are managed through Customize your pins on your profile.
 
-GitHub references:
-- https://docs.github.com/en/billing/concepts/product-billing/github-actions
-- https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule
+## Refresh and animation
 
-The original animated mint-green terminal design is restored. GIFs save only changed frame regions with `disposal=1` and a stable palette, keeping the animations lightweight without changing their appearance.
+`.github/workflows/refresh-profile.yml` runs daily at 03:23 UTC, on renderer/configuration changes, and manually from Actions → Refresh chess profile → Run workflow. It uses the built-in repository token and public GitHub metadata. Stats are daily snapshots. Keep this repository public for free standard GitHub-hosted Actions usage. GitHub may pause scheduled workflows after a long period of inactivity.
+
+The decorative knight follows legal moves across the real contribution calendar; the generator does not invent historical contributions. GIFs use a stable palette and changed-frame compression (`disposal=1`). The knight's scan is a slow loop and the calendar avoids flashing or pulsing effects. PNG links provide a still alternative.
+
+To run locally, use Python 3.12+, Pillow 12.3.0, and an authenticated GitHub CLI:
+
+```sh
+python scripts/render_profile.py
+```
+
+Colors, spacing, typography, and animation live in `scripts/render_profile.py`. Older artwork remains in `assets/` as an archive and is not loaded by the current README.

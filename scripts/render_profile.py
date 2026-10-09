@@ -1,5 +1,8 @@
 """Render a chess profile from public GitHub data; no external image services."""
 import json
+import html
+import re
+import math
 from pathlib import Path
 import subprocess
 from datetime import date
@@ -21,12 +24,12 @@ QUERY = '''query { user(login: "harshagarwal4761") {
   } }
 } }'''
 
-BG = '#071311'
-PANEL = '#0b211b'
-LINE = '#285c49'
-MINT = '#a3ffd3'
-WHITE = '#edf9f2'
-MUTED = '#88ad9c'
+BG = '#0d1916'
+PANEL = BG
+LINE = '#294138'
+MINT = '#a6ddbe'
+WHITE = '#f0f0e5'
+MUTED = '#9aafa3'
 LEVELS = ['#14342a', '#1e6448', '#299664', '#55ca8b', '#a3ffd3']
 LEVEL_NAMES = ['NONE', 'FIRST_QUARTILE', 'SECOND_QUARTILE', 'THIRD_QUARTILE', 'FOURTH_QUARTILE']
 
@@ -37,24 +40,15 @@ def font(size):
             return ImageFont.truetype(candidate, size)
     return ImageFont.load_default(size=size)
 
-FONTS = {s: font(s) for s in [12, 14, 16, 18, 20, 24, 28, 38, 44]}
+FONTS = {s: font(s) for s in [12, 14, 16, 18, 20, 22, 24, 28, 32, 38, 44]}
 
 def text(d, xy, value, size=16, color=WHITE):
     d.text(xy, str(value), font=FONTS[size], fill=color)
 
-def panel(height, label, right):
+def panel(height):
     im = Image.new('RGB', (1200, height), BG)
     d = ImageDraw.Draw(im)
-    for inset in range(12):
-        g = int(28 + inset * 2)
-        d.rounded_rectangle((inset, inset, 1199-inset, height-1-inset), radius=22-inset,
-                            outline=(14, g, int(g*.72)))
-    d.rounded_rectangle((15, 15, 1184, height-16), radius=10, fill=PANEL, outline=LINE)
-    for x, color in [(36, '#8effbc'), (56, '#62b68b'), (76, '#315f4d')]:
-        d.ellipse((x, 34, x+7, 41), fill=color)
-    text(d, (105, 28), label, 14, MINT)
-    text(d, (1160-d.textlength(right, font=FONTS[12]), 30), right, 12, MUTED)
-    d.line((32, 62, 1167, 62), fill=LINE)
+    d.rounded_rectangle((1, 1, 1198, height-2), radius=20, outline=LINE, width=2)
     return im
 
 def save_animation(frames, name, duration):
@@ -66,26 +60,25 @@ def save_animation(frames, name, duration):
 
 def hero(user, updated):
     calendar = user['contributionsCollection']['contributionCalendar']
-    base = panel(530, 'ENDGAME.EXE / PLAYER PROFILE', 'CHESS × CODE')
+    base = panel(432)
     d = ImageDraw.Draw(base)
-    d.line((453, 88, 453, 452), fill=LINE)
-    text(d, (498, 91), 'HARSH AGARWAL', 38)
-    text(d, (500, 145), '@'+USER, 18, MINT)
-    text(d, (500, 190), 'Think ahead. Build with intent.', 18, MUTED)
-    text(d, (500, 238), 'CLASS', 14, MUTED)
-    text(d, (684, 234), 'Developer / chess enthusiast', 16)
-    text(d, (500, 277), 'LOADOUT', 14, MUTED)
-    text(d, (684, 273), 'Java · Web · Shell · Kotlin', 16)
-    text(d, (500, 316), 'PLAYSTYLE', 14, MUTED)
-    text(d, (684, 312), 'Curiosity, then the next move.', 16)
-    for x, val, label in [(500, user['allRepos']['totalCount'], 'PUBLIC REPOS'),
-                          (722, calendar['totalContributions'], 'CONTRIBUTIONS / YEAR'),
-                          (1000, user['followers']['totalCount'], 'FOLLOWERS')]:
-        text(d, (x, 375), f'{val:02}', 38, MINT)
-        text(d, (x, 425), label, 12, MUTED)
-    d.line((33, 473, 1167, 473), fill=LINE)
-    text(d, (42, 489), '01 / THE KNIGHT     THINK IN POSSIBILITIES.', 14, MINT)
-    text(d, (882, 489), 'SYNC '+updated, 14, MUTED)
+    text(d, (40, 30), 'ENDGAME / 01', 16, MINT)
+    text(d, (997, 30), 'CHESS × CODE', 16, MUTED)
+    d.line((40, 68, 1160, 68), fill=LINE)
+    d.line((376, 102, 376, 370), fill=LINE)
+    title_font = next((ImageFont.truetype(path, 48) for path in [
+        '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
+        '/usr/share/fonts/google-noto-vf/NotoSans[wght].ttf'
+    ] if Path(path).exists()), ImageFont.load_default(size=48))
+    d.text((426, 106), 'Harsh Agarwal', font=title_font, fill=WHITE)
+    text(d, (430, 170), '@'+USER, 18, MINT)
+    text(d, (430, 218), 'Think ahead. Build with intent.', 22, WHITE)
+    text(d, (430, 255), 'Java / Web / Shell / Kotlin', 18, MUTED)
+    for x, val, label in [(430, user['allRepos']['totalCount'], 'PUBLIC REPOS'),
+                          (667, calendar['totalContributions'], 'CONTRIBUTIONS / YEAR'),
+                          (987, user['followers']['totalCount'], 'FOLLOWERS')]:
+        text(d, (x, 315), f'{val:02}', 32, MINT)
+        text(d, (x, 359), label, 14, MUTED)
     # Original knight silhouette, sampled into a field of terminal characters.
     mask=Image.new('L',(180,260))
     md=ImageDraw.Draw(mask)
@@ -96,30 +89,30 @@ def hero(user, updated):
     md.rectangle((12,222,162,233),fill=255)
     md.polygon([(17,236),(157,236),(171,250),(3,250)],fill=255)
     frames=[]
-    for frame in range(28):
+    for frame in range(24):
         im=base.copy(); d=ImageDraw.Draw(im)
-        scan = frame*12
-        for r, y in enumerate(range(0,256,8)):
+        scan = 120 - 150 * math.cos(frame * 2 * math.pi / 24)
+        for r, y in enumerate(range(0,256,10)):
             for c, x in enumerate(range(0,180,5)):
                 if mask.getpixel((x,y)):
                     char='01/+#'[ (r*3+c*7)%5 ]
-                    yy=91+r*11
-                    distance=abs((yy-91)-scan)
-                    col=MINT if distance<25 else '#5bc69a' if distance<70 else '#358768'
-                    text(d,(62+c*10,yy),char,12,col)
-        text(d,(96,445),'Nf3  /  READY FOR THE NEXT MOVE',12,MUTED)
+                    yy=96+r*10
+                    distance=abs((yy-96)-scan)
+                    col=MINT if distance<22 else '#6eb590' if distance<55 else '#3d735b'
+                    text(d,(62+c*8,yy),char,12,col)
+        text(d,(112,370),'Nf3 / YOUR MOVE',14,MUTED)
         frames.append(im)
     frames[0].save(ASSETS/'player-card.png')
-    save_animation(frames,'player-card.gif',100)
+    save_animation(frames,'player-card.gif',140)
 
 def activity(user, updated):
     cal=user['contributionsCollection']['contributionCalendar']
     weeks=cal['weeks']; count=cal['totalContributions']
-    base=panel(380,'THE LONG GAME / CONTRIBUTION ACTIVITY', 'REAL GITHUB DATA')
+    base=panel(310)
     d=ImageDraw.Draw(base)
-    text(d,(42,83),f'{count} contributions',28,MINT)
-    text(d,(42,121),'Over the last year. Every move counts.',14,MUTED)
-    startx=83; starty=178; step=20; cell=15
+    text(d,(40,25),f'{count} contributions',24,WHITE)
+    text(d,(882,31),'THE LAST 12 MONTHS',16,MUTED)
+    startx=89; starty=101; step=20; cell=14
     previous=None
     valid=set()
     for col,week in enumerate(weeks):
@@ -127,7 +120,7 @@ def activity(user, updated):
         first=date.fromisoformat(days[0]['date'])
         month=first.strftime('%b')
         if month != previous and col < len(weeks)-2:
-            text(d,(startx+col*step,152),month,12,MUTED); previous=month
+            text(d,(startx+col*step,73),month,12,MUTED); previous=month
         for day in days:
             row=(date.fromisoformat(day['date']).weekday()+1)%7
             level=LEVEL_NAMES.index(day['contributionLevel'])
@@ -135,10 +128,11 @@ def activity(user, updated):
             d.rounded_rectangle((x,y,x+cell,y+cell),radius=3,fill=LEVELS[level])
             valid.add((col,row))
     for row,day in [(1,'M'),(3,'W'),(5,'F')]:text(d,(48,starty+row*step),day,12,MUTED)
-    text(d,(42,343),'A KNIGHT TAKES THE SCENIC ROUTE.',12,MINT)
-    text(d,(873,343),'LESS',12,MUTED)
-    for i,c in enumerate(LEVELS):d.rounded_rectangle((916+i*21,344,930+i*21,357),radius=2,fill=c)
-    text(d,(1033,343),'MORE',12,MUTED)
+    d.line((40,248,1160,248),fill=LINE)
+    text(d,(40,267),'ONE MOVE AT A TIME.',14,MUTED)
+    text(d,(873,269),'LESS',12,MUTED)
+    for i,c in enumerate(LEVELS):d.rounded_rectangle((916+i*21,270,930+i*21,283),radius=2,fill=c)
+    text(d,(1033,269),'MORE',12,MUTED)
     # A legal sequence of knight moves across the seven-row calendar.
     route=[next((p for p in [(0,3),(0,4),(0,5),(0,6)] if p in valid), min(valid))]
     direction=1
@@ -154,7 +148,7 @@ def activity(user, updated):
     token=[(0,19),(3,13),(8,9),(3,11),(0,8),(4,3),(8,3),(9,0),(12,3),(15,2),(18,7),(18,12),(16,19)]
     frames=[]
     for idx,(col,row) in enumerate(route):
-        for phase in [0,1]:
+        for phase in [0]:
             im=base.copy(); d=ImageDraw.Draw(im)
             x=startx+col*step+7; y=starty+row*step+7
             # The board remains intact; only the decorative knight moves.
@@ -166,7 +160,36 @@ def activity(user, updated):
             d.point((x-2,y-5),fill=BG)
             frames.append(im)
     base.save(ASSETS/'contribution-board.png')
-    save_animation(frames,'contribution-board.gif',180)
+    save_animation(frames,'contribution-board.gif',360)
+
+def update_projects():
+    config = json.loads((ROOT/'profile.json').read_text())
+    projects = config['projects']
+    if len(projects) != 3:
+        raise ValueError('Choose exactly three repositories in profile.json.')
+    entries = []
+    for index, project in enumerate(projects, 1):
+        repo = project['repo']
+        if not re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', repo):
+            raise ValueError('Use owner/repository format: '+repo)
+        data = json.loads(subprocess.check_output(['gh','api','repos/'+repo], text=True))
+        if data['private']:
+            raise ValueError('Featured repositories must be public: '+repo)
+        title = html.escape(project.get('title') or data['name'])
+        description = html.escape(project.get('description') or data.get('description') or 'Explore the code and follow the project on GitHub.')
+        language = html.escape(data.get('language') or 'Code')
+        url = 'https://github.com/'+repo
+        entries.append(f'<h3>{index:02} / <a href="{url}">{title}</a></h3>\n\n'
+                       f'<p>{description}<br /><sub>{language} &nbsp; · &nbsp; '
+                       f'<a href="{url}">Explore repository ↗</a></sub></p>')
+    readme = ROOT/'README.md'
+    start, end = '<!-- PROJECTS:START -->', '<!-- PROJECTS:END -->'
+    content = readme.read_text()
+    if content.count(start) != 1 or content.count(end) != 1:
+        raise ValueError('README needs exactly one pair of project markers.')
+    before, rest = content.split(start)
+    _, after = rest.split(end)
+    readme.write_text(before+start+'\n\n'+'\n\n'.join(entries)+'\n\n'+end+after)
 
 def main():
     raw=subprocess.check_output(['gh','api','graphql','-f','query='+QUERY],text=True)
@@ -176,16 +199,7 @@ def main():
     today=date.today().isoformat()
     hero(user,today)
     activity(user,today)
-    projects=[('01 / ROOK', 'AI LIBRARY TOOLS', 'Java web app / tool discovery, dashboard & authentication', 'ai-tools'),
-              ('02 / BISHOP', 'FILE SCANNER', 'Java / directory scanning, pattern matching & reports', 'file-scanner'),
-              ('03 / PAWN', 'SPS PROJECT', 'Shell / build, package, archive & deploy a C project', 'sps-project')]
-    for label,title,subtitle,slug in projects:
-        im=panel(180,label,'PIECES IN PLAY')
-        d=ImageDraw.Draw(im)
-        text(d,(42,81),title,28,MINT)
-        text(d,(42,128),subtitle,16,MUTED)
-        text(d,(984,95),'VIEW REPO >',16,WHITE)
-        im.save(ASSETS/(slug+'.png'))
+    update_projects()
     print('Rendered player card and contribution board from live public GitHub data.')
 
 if __name__=='__main__':main()

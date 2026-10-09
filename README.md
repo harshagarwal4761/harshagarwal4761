@@ -1,46 +1,51 @@
 <p align="center">
-  <b>♞ THINK AHEAD. BUILD WITH INTENT.</b><br />
-  <sub>Code, curiosity, and the next good move.</sub>
+  <img src="assets/player-card.gif" width="840" alt="Harsh Agarwal — Think ahead. Build with intent. Animated green ASCII knight with public GitHub stats." />
 </p>
-
-<img src="assets/player-card.gif" width="100%" alt="Harsh Agarwal's animated terminal profile: a scanning ASCII chess knight, technologies, and daily refreshed public GitHub stats." />
 
 <p align="center">
   <a href="https://github.com/harshagarwal4761?tab=repositories">Repositories</a>
-  &nbsp; / &nbsp;
-  <a href="#-pieces-in-play">Projects</a>
-  &nbsp; / &nbsp;
+  &nbsp; · &nbsp;
+  <a href="#selected-work">Selected work</a>
+  &nbsp; · &nbsp;
   <a href="assets/player-card.png">Still version</a>
 </p>
 
-### ♞ The long game
-
-<img src="assets/contribution-board.gif" width="100%" alt="Real GitHub contributions over the last year, with a decorative knight making L-shaped moves across the calendar." />
-
-<p align="center"><sub>Real contributions. A knight taking the scenic route. <a href="assets/contribution-board.png">View without animation</a>.</sub></p>
-
-### ♜ Pieces in play
-
-<a href="https://github.com/harshagarwal4761/AI-Library-Tools"><img src="assets/ai-tools.png" width="100%" alt="AI Library Tools — Java web app with tool discovery, a dashboard, and authentication. View repository." /></a>
-
-<a href="https://github.com/harshagarwal4761/File-Scanner"><img src="assets/file-scanner.png" width="100%" alt="File Scanner — Java directory scanning, pattern matching, and reporting components. View repository." /></a>
-
-<a href="https://github.com/harshagarwal4761/SPS-Project"><img src="assets/sps-project.png" width="100%" alt="SPS Project — Shell scripts to build, package, archive, and deploy a C project. View repository." /></a>
-
-<details>
-<summary><b>♟ Open the toolbox</b></summary>
 <br />
 
-Languages and tools used across my projects:
+### The long game
 
-`Java` · `HTML` · `CSS` · `JavaScript` · `Shell` · `Kotlin` · `Git`
+<p align="center">
+  <img src="assets/contribution-board.gif" width="840" alt="Real contributions over the last year. A decorative knight follows legal moves across the calendar." />
+</p>
 
-- [AI Library Tools](https://github.com/harshagarwal4761/AI-Library-Tools)
-- [File Scanner](https://github.com/harshagarwal4761/File-Scanner)
-- [SPS Project](https://github.com/harshagarwal4761/SPS-Project)
+<p align="center"><sub>A little progress, every day. &nbsp; <a href="assets/contribution-board.png">View without animation ↗</a></sub></p>
 
-</details>
+<br />
 
-<p align="center"><sub>♚ One move at a time.</sub></p>
+## Selected work
 
-<!-- Cards refresh daily using the repository's GitHub Actions workflow. -->
+<!-- PROJECTS:START -->
+
+<h3>01 / <a href="https://github.com/harshagarwal4761/AI-Library-Tools">AI Library Tools</a></h3>
+
+<p>A Java web app for discovering AI tools, with a dashboard and authentication.<br /><sub>CSS &nbsp; · &nbsp; <a href="https://github.com/harshagarwal4761/AI-Library-Tools">Explore repository ↗</a></sub></p>
+
+<h3>02 / <a href="https://github.com/harshagarwal4761/File-Scanner">File Scanner</a></h3>
+
+<p>Java utilities for directory scanning, pattern matching, and reporting.<br /><sub>Java &nbsp; · &nbsp; <a href="https://github.com/harshagarwal4761/File-Scanner">Explore repository ↗</a></sub></p>
+
+<h3>03 / <a href="https://github.com/harshagarwal4761/SPS-Project">SPS Project</a></h3>
+
+<p>Shell scripts to build, package, archive, and deploy a C project.<br /><sub>Shell &nbsp; · &nbsp; <a href="https://github.com/harshagarwal4761/SPS-Project">Explore repository ↗</a></sub></p>
+
+<!-- PROJECTS:END -->
+
+<br />
+
+### The toolkit
+
+`Java` &nbsp; `HTML` &nbsp; `CSS` &nbsp; `JavaScript` &nbsp; `Shell` &nbsp; `Kotlin` &nbsp; `Git`
+
+<br />
+
+<p align="center"><sub>♞ &nbsp; Think in possibilities. Build one move at a time.</sub></p>

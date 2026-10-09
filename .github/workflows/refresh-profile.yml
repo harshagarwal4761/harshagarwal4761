@@ -8,6 +8,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/**'
+      - 'profile.json'
       - '.github/workflows/refresh-profile.yml'
 
 permissions:
@@ -36,7 +37,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add assets/player-card.* assets/contribution-board.*
+          git add assets/player-card.* assets/contribution-board.* README.md
           if ! git diff --cached --quiet; then
             git commit -m 'Refresh chess profile cards'
             git push
