@@ -1,9 +1,9 @@
-# Minimal Rayquaza profile
+# Original green chess profile
 
-The profile is intentionally calm and static: one banner, plain text, and project links. There are no animated panels, external widgets, or subscriptions. GitHub's own contribution calendar appears below the README.
+The original mint-green chess profile is restored. The README loads one self-contained SVG banner (about 7 KB), followed by native Markdown text, links, and a table.
 
-Edit `README.md` to change the text or project selection. The illustration is `assets/rayquaza-minimal.png`. It was created with the built-in image generation tool; the prompt is saved in `ARTWORK.md`.
+There are no GIFs, external image widgets, external fonts, scripts, or scheduled refreshes. GitHub handles page delivery and its own contribution calendar.
 
-The previous daily card-refresh workflow has been removed because the current profile has no generated statistics cards. Earlier themes remain available in Git history; their unused assets can be reused later.
+Edit README.md for the copy and project links. Edit assets/chess-banner.svg for the artwork. The PNG banner is retained as a fallback.
 
-The banner is unofficial Pokémon fan art featuring Rayquaza.
+Earlier Rayquaza and animated chess designs remain available in Git history.
